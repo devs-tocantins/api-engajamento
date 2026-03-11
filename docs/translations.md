@@ -1,45 +1,53 @@
-# Translations
+# Traduções e i18n
+(Internacionalização - Nestjs-i18n)
 
-## Table of Contents <!-- omit in toc -->
+## Tabela de Conteúdos <!-- omit in toc -->
 
-- [How to add a new translation](#how-to-add-a-new-translation)
-- [How to use translations on frontend](#how-to-use-translations-on-frontend)
-- [How to use translations in code](#how-to-use-translations-in-code)
+- [Como Adicionar Mensagens](#como-adicionar-novas-traduções)
+- [Como Configurar Idiomas no Frontend](#como-usar-arquivos-traduzidos-para-o-front)
+- [Como consumir o pacote de idioma internamente em Regra de Negócio](#como-verificar-um-i18n-direto-num-serviço)
 
-## How to add a new translation
+---
 
-1. Copy the `en` folder and rename it to the language you are adding.
-2. Translate files in the new folder.
+O dev-starter já vem pronto para garantir respostas API Poliglotas caso seu Front-end exija ou mude de língua no Painel do Usuário! Assim, o Backend não reenvia os retornos hardcoded (chumbados e sempre iguais), e sim lê um dicionário local a depender da chave.
 
-## How to use translations on frontend
+## Como adicionar novas traduções
 
-1. Add header `x-custom-lang` to the request with the language you want to use.
+1. Vá à raiz em `src/i18n`.
+2. O Boilerplate sempre checa os JSONs em pastas atreladas. Existe o `en` atualmente. 
+3. Você cria a pasta `pt-BR` e espelha os arquivos copiando e modificando (exemplo, copie os valores do JSON dict de validações e converta as regras "Missing Field" do class-validator para português!)
 
-## How to use translations in code
+## Como usar arquivos traduzidos para o Front
+1. Adicione/configure o Fetch das APIs com o novo cabeçalho (`Header`) contendo a requisição:
+   **`x-custom-lang`**: `pt-BR`
+2. Ao receber esta flag de custom-lang no contexto do request (ou via Cookie local), o `i18n-module` se vira e transforma todas as Exceptions globais!
+
+## Como verificar um I18N direto num serviço
+
+Às vezes, nós precisamos chamar as strings na mão no meio de um arquivo Controller ou Mail. Como instanciar da nuvem? Muito simples.
+
 
 ```typescript
 import { I18nContext } from 'nestjs-i18n';
 
-// code ...
-
+// ...
 @Injectable()
-export class SomeService {
+export class AlgotithmsGamificationService {
   // code ...
 
-  async someMethod(): Promise<void> {
-    const i18n = I18nContext.current();
+  async analyzeAndCheckTitleName(): Promise<void> {
+
+    // Invoca Estaticamente
+    const i18n = I18nContext.current(); 
 
     if (!i18n) {
-      throw new Error('I18nContext is not available');
+      throw new Error('I18nContext is not available em ambientes descontextualizados');
     }
 
-    const emailConfirmTitle = await i18n.t('common.confirmEmail');
+    // Passa a DotKey que encontra o arquivo! Isso procura em "common.json" -> pela key "confirmEmail_Title_Name"
+    const parsedLanguage = await i18n.t('common.confirmEmail');
 
-    // code ...
+    // ... e Usa a Váriavel "parsedLanguage" à vontade.
   }
 }
 ```
-
----
-
-Previous: [Automatic update of dependencies](automatic-update-dependencies.md)

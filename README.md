@@ -1,73 +1,83 @@
-# NestJS REST API boilerplate 🇺🇦
+# Motor de Engajamento e Gamificação - Devs Tocantins 🚀
 
-[![image](https://github.com/brocoders/nestjs-boilerplate/assets/72293912/197da43e-02f4-4895-8d3e-b7a42a591c26)](https://github.com/new?template_name=nestjs-boilerplate&template_owner=brocoders)
+**Tudo o que for feito em prol da comunidade e que gere um impacto real vale pontos e será reconhecido. O objetivo deste sistema é capturar, registrar e eternizar esse esforço.**
 
-![github action status](https://github.com/brocoders/nestjs-boilerplate/actions/workflows/docker-e2e.yml/badge.svg)
-[![renovate](https://img.shields.io/badge/renovate-enabled-%231A1F6C?logo=renovatebot)](https://app.renovatebot.com/dashboard)
-[![Static Badge](https://img.shields.io/badge/supported_by-brocoders-d91965?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTMwIiBoZWlnaHQ9IjE4NyIgdmlld0JveD0iMCAwIDEzMCAxODciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI%2BCjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF83NzExXzQ4OTEpIj4KPHBhdGggZD0iTTc1Ljk5NjcgNDUuNzUwNkM2NS4xMDg5IDQ2Ljg2MSA1Ny45MjMgNTguNDA5NyA2Mi4yNzgxIDY4Ljg0OEwxMDguNDQyIDE4N0w3My42MDEzIDE1NS4wMTlIMzQuODQwOUMyMC42ODY4IDE1NS4wMTkgOS4zNjM0OSAxNDMuNDcgOS4zNjM0OSAxMjkuMDM0Vjk0LjYxMDVDOS4zNjM0OSA5Mi4xNjc1IDguNDkyNDYgODkuNzI0NSA2Ljc1MDQyIDg3Ljk0NzdMMCA4MS4wNjNMNi43NTA0MiA3NC4xNzgxQzguNDkyNDYgNzIuNDAxNCA5LjM2MzQ5IDY5Ljk1ODQgOS4zNjM0OSA2Ny41MTU0VjMxLjA5MjZDOS4zNjM0OSAxMy43Njk2IDIzLjA4MjEgMCAzOS44NDkyIDBINTguMTQwN0w3NS45OTY3IDQ1Ljc1MDZaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTI1LjY0NiAxMTIuMzc4Vjk0LjgzMjdDMTI1LjY0NiA5My43MjIyIDEyNi4wODEgOTIuNjExOCAxMjYuOTUyIDkxLjcyMzRMMTMwLjAwMSA4OC4zOTIxTDEyNi45NTIgODUuMDYwN0MxMjYuMDgxIDg0LjE3MjQgMTI1LjY0NiA4My4wNjE5IDEyNS42NDYgODEuOTUxNFY2OS43MzY1QzEyNS42NDYgNTYuNDExMSAxMTQuOTc2IDQ1Ljc1MDcgMTAyLjEyOCA0NS43NTA3SDc1Ljk5NzNMMTA1LjYxMiAxMzAuODExQzEwNS42MTIgMTMwLjgxMSAxMTAuNjIgMTMwLjgxMSAxMTAuODM4IDEzMC44MTFDMTE5LjExMyAxMjkuMDM1IDEyNS42NDYgMTIxLjQ4NCAxMjUuNjQ2IDExMi4zNzhaIiBmaWxsPSJ3aGl0ZSIvPgo8L2c%2BCjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzc3MTFfNDg5MSI%2BCjxyZWN0IHdpZHRoPSIxMzAiIGhlaWdodD0iMTg3IiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM%2BCjwvc3ZnPgo%3D&logoColor=d91965)](https://brocoders.com/)
-[![Discord Badge](https://img.shields.io/badge/discord-NodeJS_boilerplate-d91965?style=flat&labelColor=5866f2&logo=discord&logoColor=white&link=https://discord.com/channels/520622812742811698/1197293125434093701)](https://discord.com/channels/520622812742811698/1197293125434093701)
+[![github action status](https://github.com/brocoders/nestjs-boilerplate/actions/workflows/docker-e2e.yml/badge.svg)](https://github.com/brocoders/nestjs-boilerplate)
 
 <br />
-<p align="center"><a href="https://discord.com/channels/520622812742811698/1197293125434093701"><img src="https://github.com/brocoders/nestjs-boilerplate/assets/72293912/c9d5fbf0-b56d-46b5-bb30-f96f44764bae" width="300"/></a></p>
-<br />
 
-## Description <!-- omit in toc -->
+Este é o repositório da API (Backend) responsável pelo gerenciamento de toda a economia pontual e rankings mensais do portal Devs Tocantins. A estrutura provê validações criptográficas, integrações com nuvem, bancos relacionais robustos, histórico de transações e roteamentos autênticos baseada numa moderna Arquitetura API-First sobre `NestJS` e `TypeORM`.
 
-NestJS REST API boilerplate for a typical project
+---
 
-[Full documentation here](/docs/readme.md)
+## Sumário
 
-Demo: <https://nestjs-boilerplate-test.herokuapp.com/docs>
+- [Mapeamento da Documentação](#mapeamento-da-documentação)
+- [Funcionalidades Suportadas](#funcionalidades-suportadas)
+- [Inicialização Rápida](#inicialização-rápida)
+- [Como Contribuir](#como-contribuir)
 
-A fully compatible frontend boilerplate: <https://github.com/brocoders/extensive-react-boilerplate>
+---
 
-Belongs to the [bc boilerplates](https://bcboilerplates.com/) ecosystem
+## Mapeamento da Documentação
 
-<https://github.com/user-attachments/assets/a66f114a-c714-4036-8eeb-20cbf04ae985>
+Familiarize-se com a estrutura do sistema visitando a nossa **Pasta Oficial de Documentações `docs/`** na raiz. 
 
-## Table of Contents <!-- omit in toc -->
+* [Instalação e Ambiente Local](docs/installing-and-running.md)
+* [Regras do Produto (PRD - Engajamento)](docs/prd-engajamento.md)
+* [Design da API Base](docs/api-design.md)
+* [Modelagem de Dados (Banco Relacional)](docs/data-model.md)
+* [Autenticação e Sessões JWT](docs/auth.md)
+* [Upload de Comprovantes (AWS S3 / Storage)](docs/file-uploading.md)
+* [Arquitetura Hexagonal](docs/architecture.md)
+* [Geradores de Componentes por CLI](docs/cli.md)
+* [Internacionalização / Traduções](docs/translations.md)
+* [Filosofia E2E e Testes Unitários](docs/tests.md) 
 
-- [Features](#features)
-- [Contributors](#contributors)
-- [Support](#support)
+---
 
-## Features
+## Funcionalidades Suportadas
 
-- [x] Database. Support [TypeORM](https://www.npmjs.com/package/typeorm) and [Mongoose](https://www.npmjs.com/package/mongoose).
-- [x] Seeding.
-- [x] Config Service ([@nestjs/config](https://www.npmjs.com/package/@nestjs/config)).
-- [x] Mailing ([nodemailer](https://www.npmjs.com/package/nodemailer)).
-- [x] Sign in and sign up via email.
-- [x] Social sign in (Apple, Facebook, Google).
-- [x] Admin and User roles.
-- [x] Internationalization/Translations (I18N) ([nestjs-i18n](https://www.npmjs.com/package/nestjs-i18n)).
-- [x] File uploads. Support local and Amazon S3 drivers.
-- [x] Swagger.
-- [x] E2E and units tests.
-- [x] Docker.
-- [x] CI (Github Actions).
+- [x] **Relacional Profundo:** Funciona através do PostgreSQL integrado ao TypeORM. Desacoplamento entre Dados de Login e Dados do Perfil de Gamificação (carteira XP).
+- [x] **CI e Segurança Intensa:** Configurações de Linting nativas via Github Actions, padronização de commits (Husky), ESLint, Prettier e Restrições de serializações (ocultamento de senhas automático com class-transformer).
+- [x] **Ecossistema Completo de Autenticação:** Login por Email integrado com Handlebars (Envio transacional com Nodemailer e teste offline com Maildev). Preparado pro futuro com Apple, Facebook e Google Login.
+- [x] **Permissões (Roles e Submissões):** Camada de aprovação unificada contendo papéis isolados (Usuário Submete Atividades / Moderador aprova, ganha XP automático).
+- [x] **Arquitetura Imparcial:** Separação entre Serviços Core, Infraestrutura Persistência e Entidades base do Domínio.
 
-## Contributors
+---
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Shchepotin"><img src="https://avatars.githubusercontent.com/u/6001723?v=4?s=100" width="100px;" alt="Vladyslav Shchepotin"/><br /><sub><b>Vladyslav Shchepotin</b></sub></a><br /><a href="#maintenance-Shchepotin" title="Maintenance">🚧</a> <a href="#doc-Shchepotin" title="Documentation">📖</a> <a href="#code-Shchepotin" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SergeiLomako"><img src="https://avatars.githubusercontent.com/u/31205374?v=4?s=100" width="100px;" alt="SergeiLomako"/><br /><sub><b>SergeiLomako</b></sub></a><br /><a href="#code-SergeiLomako" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ElenVlass"><img src="https://avatars.githubusercontent.com/u/72293912?v=4?s=100" width="100px;" alt="Elena Vlasenko"/><br /><sub><b>Elena Vlasenko</b></sub></a><br /><a href="#doc-ElenVlass" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="http://brocoders.com"><img src="https://avatars.githubusercontent.com/u/226194?v=4?s=100" width="100px;" alt="Rodion"/><br /><sub><b>Rodion</b></sub></a><br /><a href="#business-sars" title="Business development">💼</a></td>
-    </tr>
-  </tbody>
-</table>
+## Inicialização Rápida
 
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
+Começar no nosso ecossistema exige pouquíssimos comandos devido à automação Docker e Seeds de semente do próprio sistema.
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+1. Configure as chaves base copiando `.env-example-relational`
+```bash
+cp env-example-relational .env
+```
+2. Inicialize as bases em Background:
+```bash
+docker compose up -d postgres adminer maildev
+```
+3. Instale módulos node e rode o script configurador inicial (apenas 1x).
+```bash
+npm run app:config
+```
+4. Gere o BD a partir dos schemas de entidades locais (`migration`) e gere também dados falsos e regras iniciais de catálogo para facilitar seus testes no Swagger (`seed`).
+```bash
+npm run migration:run
+npm run seed:run:relational
+```
+5. Assista a Mágica rodando localmente! Acesse o portal `http://localhost:3000/docs`.
+```bash
+npm run start:dev
+```
 
-## Support
+*(Para explicações detalhadas ou dúvidas nos comandos de Setup, visite: `docs/installing-and-running.md`)*
 
-If you seek consulting, support, or wish to collaborate, please contact us via [boilerplates@brocoders.com](mailto:boilerplates@brocoders.com). For any inquiries regarding boilerplates, feel free to ask on [GitHub Discussions](https://github.com/brocoders/nestjs-boilerplate/discussions) or [Discord](https://discord.com/channels/520622812742811698/1197293125434093701).
+---
+
+## Como Contribuir
+
+Mergulhe na arquitetura colaborando para tornar os Devs Tocantins o polo de maior reconhecimento de devs voluntários.
+
+Antes de baixar o repô e subir código de qualquer maneira, exigimos fortemente a leitura do nosso **[Guia de Contribuição (CONTRIBUTING.md)](CONTRIBUTING.md)** para não quebrar a CI principal do pipeline (por não utilizar Conventional Commits) ou não desrespeitar a padronização NestJS imposta nas Models.

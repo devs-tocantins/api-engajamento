@@ -1,94 +1,70 @@
-# Serialization
+# Serialização (Manipulação de Saída de Dados na Rede)
 
-For serialization boilerplate use [class-transformer](https://www.npmjs.com/package/class-transformer) and global interceptor `ClassSerializerInterceptor`.
-
----
-
-## Table of Contents <!-- omit in toc -->
-
-- [Hide private property](#hide-private-property)
-- [Show private property for admins](#show-private-property-for-admins)
+O Motor de Engajamento conta com uma estrutura central super útil importada do mundo React/Angular para lidar com Retornos da API ("Serializar Carga"): A ferramenta `class-transformer` em conjunto ao NestJS formam o ecossistema perfeito no uso dos *Decoradores de Classes*.
 
 ---
 
-## Hide private property
+## Tabela de Conteúdos <!-- omit in toc -->
 
-If you need to hide some property in the entity you can use `@Exclude({ toPlainOnly: true })` on the column.
+- [Ocultar propriedades sensíveis ou privadas (Dados Limpos)](#ocultar-propriedades-privadas)
+- [Tratamentos Estratificados (Mostrar dados sigilosos apenas para Admins)](#mostrar-propriedade-privada-para-admins)
+
+---
+
+## Ocultar Propriedades Privadas
+
+Não é necessário limpar via código manualmente cada "senhas", "hash de tokens" dos seus selects e queries TypeORM em dezenas de Models/Repos. O `class-transformer` trata tudo!
+Você simplesmente marca diretamente na Entidade o campo do Hash e o Rest interceptor automaticamente bloqueia de vazar nos retornos Puros (O JSON no Postman que devolve a Entity).
+
+Use a anotação `@Exclude({ toPlainOnly: true })` na coluna sensível da sua `Entity`.
 
 ```ts
-// /src/users/entities/user.entity.ts
-
 import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User extends EntityRelationalHelper {
-  // Some code here...
+  // ..
 
   @Column({ nullable: true })
-  @Exclude({ toPlainOnly: true })
+  @Exclude({ toPlainOnly: true }) // <-- NUNCA vai sair p/ o Request/JSON. A engine processou? Exclua.
   password: string;
 
-  // Some code here...
+  // ..
 }
 ```
 
-## Show private property for admins
+## Mostrar Propriedade Privada para Admins
 
-1. Create a controller that returns data only for admin and add `@SerializeOptions({ groups: ['admin'] })` to method:
+Em casos raros de Auditoria em Regras de Negócios / Painel Administrativo do "GamificationProfile", você pode querer devolver dados que normalmente o Usuário Padrão nunca deve saber: Como por exemplo O E-mail Completo de Outra Pessoa na plataforma ou Hash do Access de Login. Como desviar a exclusão?
+
+1. Force seu Controller Administrativo a injetar na chamada toda uma Regra Agrupada Global através da propriedade `@SerializeOptions({ groups: ['admin'] })`:
 
    ```ts
-   // /src/users/users.controller.ts
-
-   // Some code here...
-
-   @ApiBearerAuth()
-   @Roles(RoleEnum.admin)
-   @UseGuards(AuthGuard('jwt'), RolesGuard)
-   @Controller({
-     path: 'users',
-     version: '1',
+   // ...
+   @SerializeOptions({
+     groups: ['admin'], // Passamos o Grupo de Serialização aqui na Resposta de View Completa
    })
-   export class UsersController {
-     constructor(private readonly usersService: UsersService) {}
-
-     // Some code here...
-
-     @SerializeOptions({
-       groups: ['admin'],
-     })
-     @Get(':id')
-     @HttpCode(HttpStatus.OK)
-     findOne(@Param('id') id: string) {
-       return this.usersService.findOne({ id: +id });
-     }
-
-     // Some code here...
+   @Get(':id')
+   @HttpCode(HttpStatus.OK)
+   findOne(@Param('id') id: string) {
+     return this.usersService.findOne({ id: +id });
    }
+   // ...
    ```
 
-1. In the entity add `@Expose({ groups: ['admin'] })` to the column that should be exposed for admin:
+2. E lá no seu Módulo nativo: Injete o grupo na exclusividade e a API irá expor este dado!
 
    ```ts
-   // /src/users/entities/user.entity.ts
-
-   // Some code here...
-
    import { Expose } from 'class-transformer';
 
    @Entity()
    export class User extends EntityRelationalHelper {
-     // Some code here...
+     // ..
 
      @Column({ unique: true, nullable: true })
-     @Expose({ groups: ['admin'] })
+     @Expose({ groups: ['admin'] }) // Eu normalmente ficaria oculto, EXCETO se no "Módulo" me ativarem com 'admin'.
      email: string | null;
 
-     // Some code here...
+     // ..
    }
    ```
-
----
-
-Previous: [Auth](auth.md)
-
-Next: [File uploading](file-uploading.md)

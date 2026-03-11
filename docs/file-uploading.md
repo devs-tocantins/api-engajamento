@@ -1,183 +1,63 @@
-# File uploading
+# Upload de Arquivos
 
 ---
 
-## Table of Contents <!-- omit in toc -->
+## Tabela de Conteúdos <!-- omit in toc -->
 
-- [Drivers support](#drivers-support)
-- [Uploading and attach file flow for `local` driver](#uploading-and-attach-file-flow-for-local-driver)
-  - [An example of uploading an avatar to a user profile (local)](#an-example-of-uploading-an-avatar-to-a-user-profile-local)
-  - [Video example](#video-example)
-- [Uploading and attach file flow for `s3` driver](#uploading-and-attach-file-flow-for-s3-driver)
-  - [Configuration for `s3` driver](#configuration-for-s3-driver)
-  - [An example of uploading an avatar to a user profile (S3)](#an-example-of-uploading-an-avatar-to-a-user-profile-s3)
-- [Uploading and attach file flow for `s3-presigned` driver](#uploading-and-attach-file-flow-for-s3-presigned-driver)
-  - [Configuration for `s3-presigned` driver](#configuration-for-s3-presigned-driver)
-  - [An example of uploading an avatar to a user profile (S3 Presigned URL)](#an-example-of-uploading-an-avatar-to-a-user-profile-s3-presigned-url)
-- [How to delete files?](#how-to-delete-files)
+- [Suporte a Provedores (Drivers)](#suporte-a-provedores)
+- [Fluxo de Upload `local`](#fluxo-de-upload-local)
+- [Fluxo de Upload `s3`](#fluxo-de-upload-s3)
+  - [Configuração para S3](#configuração-para-s3)
+- [Fluxo de Upload `s3-presigned` (Recomendado)](#fluxo-de-upload-s3-presigned)
+  - [Configuração para S3 Presigned](#configuração-para-s3-presigned)
+- [Como deletar arquivos?](#como-deletar-arquivos)
 
 ---
 
-## Drivers support
+## Suporte a Provedores
 
-Out-of-box boilerplate supports the following drivers: `local`, `s3`, and `s3-presigned`. You can set it in the `.env` file, variable `FILE_DRIVER`. If you want to use another service for storing files, you can extend it.
+A API do Motor de Engajamento suporta (através do Boilerplate) os seguintes provedores (drivers) de configuração de armazenamento de imagens/documentos: `local`, `s3`, e `s3-presigned`.
+Você pode escolher um na variável `FILE_DRIVER` do seu `.env`.
 
-> For production we recommend using the "s3-presigned" driver to offload your server.
+> O Motor de Engajamento exigirá armazenar comprovantes de atividades. Para Produção é muito recomendado usar a flag "s3-presigned".
 
 ---
 
-## Uploading and attach file flow for `local` driver
+## Fluxo de Upload `local`
 
-Endpoint `/api/v1/files/upload` is used for uploading files, which returns `File` entity with `id` and `path`. After receiving `File` entity you can attach this to another entity.
+O recurso `/api/v1/files/upload` aceita Multipart Form. Ele te devolve um Modelo `File` base contendo o ID e Path (`caminho`) para você atrelar a qualquer outra entidade.
 
-### An example of uploading an avatar to a user profile (local)
+### Exemplo de upload de Avatar:
+1. Cliente envia o arquivo via Requisição POST `api/v1/files/upload`.
+2. O Backend te devolve o ID.
+3. Você passa esse ID para atualizar seu Usuário em `PATCH /api/v1/auth/me`.
 
-```mermaid
-sequenceDiagram
-    participant A as Fronted App
-    participant B as Backend App
+## Fluxo de Upload `s3`
 
-    A->>B: Upload file via POST /api/v1/files/upload
-    B->>A: Receive File entity with "id" and "path" properties
-    note left of A: Attach File entity to User entity
-    A->>B: Update user via PATCH /api/v1/auth/me
+O endpoint funcionará exatamenente da mesma de forma (O Backend recebe o buffer da imagem através do cliente, transfere a RAM processando para o Bucket S3 remotamente da API e devolve as chaves finais).
+
+### Configuração para S3
+
+Você precisa acessar o IAM e S3 da AWS e conceder acesso via Cross-Origin Resource Sharing (CORS) permitindo o método `GET` liberado. 
+Em seguida, configure o `.env`:
+```dotenv
+FILE_DRIVER=s3
+ACCESS_KEY_ID=SUA_CHAVE_AWS
+SECRET_ACCESS_KEY=SEU_SEGREDO_AWS
+AWS_S3_REGION=us-east-1
+AWS_DEFAULT_S3_BUCKET=nome-do-bucket-engajamento
 ```
 
-### Video example
+## Fluxo de Upload `s3-presigned`
 
-<https://user-images.githubusercontent.com/6001723/224558636-d22480e4-f70a-4789-b6fc-6ea343685dc7.mp4>
+**Para aliviar o servidor Backend.**
+Ao invés do Frontend mandar o Arquivo Pesado para API, a API devolve ao Frontend uma `Url Assinada Temporária`. O Frontend faz o Upload diretamente pro Bucket da Amazon *by-passando* o tráfego do servidor NodeJS.
+Nenhum byte extra de imagem pesa no servidor de Produção!
 
-## Uploading and attach file flow for `s3` driver
+### Configuração para S3 Presigned
 
-Endpoint `/api/v1/files/upload` is used for uploading files, which returns `File` entity with `id` and `path`. After receiving `File` entity you can attach this to another entity.
+CORS do lado da Amazon precisa permitir os métodos (`GET`, `PUT`). Modifique para garantir que suas restrições de "PUT" limitem apenas para a `https://sua-url-do-frontend.com`!
 
-### Configuration for `s3` driver
+## Como deletar arquivos?
 
-1. Open https://s3.console.aws.amazon.com/s3/buckets
-1. Click "Create bucket"
-1. Create bucket (for example, `your-unique-bucket-name`)
-1. Open your bucket
-1. Click "Permissions" tab
-1. Find "Cross-origin resource sharing (CORS)" section
-1. Click "Edit"
-1. Paste the following configuration
-
-    ```json
-    [
-      {
-        "AllowedHeaders": ["*"],
-        "AllowedMethods": ["GET"],
-        "AllowedOrigins": ["*"],
-        "ExposeHeaders": []
-      }
-    ]
-    ```
-
-1. Click "Save changes"
-1. Update `.env` file with the following variables:
-
-    ```dotenv
-    FILE_DRIVER=s3
-    ACCESS_KEY_ID=YOUR_ACCESS_KEY_ID
-    SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
-    AWS_S3_REGION=YOUR_AWS_S3_REGION
-    AWS_DEFAULT_S3_BUCKET=YOUR_AWS_DEFAULT_S3_BUCKET
-    ```
-
-### An example of uploading an avatar to a user profile (S3)
-
-```mermaid
-sequenceDiagram
-    participant A as Fronted App
-    participant B as Backend App
-    participant C as AWS S3
-
-    A->>B: Upload file via POST /api/v1/files/upload
-    B->>C: Upload file to S3
-    B->>A: Receive File entity with "id" and "path" properties
-    note left of A: Attach File entity to User entity
-    A->>B: Update user via PATCH /api/v1/auth/me
-```
-
-## Uploading and attach file flow for `s3-presigned` driver
-
-Endpoint `/api/v1/files/upload` is used for uploading files. In this case `/api/v1/files/upload` receives only `fileName` property (without binary file), and returns the `presigned URL` and `File` entity with `id` and `path`. After receiving the `presigned URL` and `File` entity you need to upload your file to the `presigned URL` and after that attach `File` to another entity.
-
-### Configuration for `s3-presigned` driver
-
-1. Open https://s3.console.aws.amazon.com/s3/buckets
-1. Click "Create bucket"
-1. Create bucket (for example, `your-unique-bucket-name`)
-1. Open your bucket
-1. Click "Permissions" tab
-1. Find "Cross-origin resource sharing (CORS)" section
-1. Click "Edit"
-1. Paste the following configuration
-
-    ```json
-    [
-      {
-        "AllowedHeaders": ["*"],
-        "AllowedMethods": ["GET", "PUT"],
-        "AllowedOrigins": ["*"],
-        "ExposeHeaders": []
-      }
-    ]
-    ```
-
-   For production we recommend to use more strict configuration:
-
-   ```json
-   [
-     {
-       "AllowedHeaders": ["*"],
-       "AllowedMethods": ["PUT"],
-       "AllowedOrigins": ["https://your-domain.com"],
-       "ExposeHeaders": []
-     },
-      {
-        "AllowedHeaders": ["*"],
-        "AllowedMethods": ["GET"],
-        "AllowedOrigins": ["*"],
-        "ExposeHeaders": []
-      }
-   ]
-   ```
-
-1. Click "Save changes"
-1. Update `.env` file with the following variables:
-
-    ```dotenv
-    FILE_DRIVER=s3-presigned
-    ACCESS_KEY_ID=YOUR_ACCESS_KEY_ID
-    SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
-    AWS_S3_REGION=YOUR_AWS_S3_REGION
-    AWS_DEFAULT_S3_BUCKET=YOUR_AWS_DEFAULT_S3_BUCKET
-    ```
-
-### An example of uploading an avatar to a user profile (S3 Presigned URL)
-
-```mermaid
-sequenceDiagram
-    participant C as AWS S3
-    participant A as Fronted App
-    
-    participant B as Backend App
-
-    A->>B: Send file name (not binary file) via POST /api/v1/files/upload
-    note right of B: Generate presigned URL
-    B->>A: Receive presigned URL and File entity with "id" and "path" properties
-    A->>C: Upload file to S3 via presigned URL
-    note right of A: Attach File entity to User entity
-    A->>B: Update user via PATCH /api/v1/auth/me
-```
-
-## How to delete files?
-
-We prefer not to delete files, as this may have negative experience during restoring data. Also for this reason we also use [Soft-Delete](https://orkhan.gitbook.io/typeorm/docs/delete-query-builder#soft-delete) approach in database. However, if you need to delete files you can create your own handler, cronjob, etc.
-
----
-
-Previous: [Serialization](serialization.md)
-
-Next: [Tests](tests.md)
+**Soft Delete.** O Boilerplate confia inteiramente no uso de exclusão lógica (Soft Delete - o registro ganha a flag `deletedAt` e não some de fato) para propósitos de Auditoria. Especialmente em um Motor de Gamificação, nunca precisaremos apagar os logs e fotos "impróprias"/"reprovadas". Elas devem continuar guardadas em Storage/Postgres com status passivos ou rejeitados.

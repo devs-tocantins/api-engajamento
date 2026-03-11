@@ -1,41 +1,36 @@
-# Tests
+# Testes e Assertividade
 
-## Table of Contents <!-- omit in toc -->
+## Tabela de Conteúdos <!-- omit in toc -->
 
-- [Unit Tests](#unit-tests)
-- [E2E Tests](#e2e-tests)
-- [Tests in Docker](#tests-in-docker)
-  - [For relational database](#for-relational-database)
-  - [For document database](#for-document-database)
+- [Testes Unitários](#testes-unitários)
+- [Testes End-to-End (E2E)](#testes-e2e)
+- [Rodando Rotinas Independentes c/ Docker](#testes-em-conteineres-dockere2e)
 
-## Unit Tests
+---
 
+A filosofia do Boilerplate foca em permitir a checagem rápida em ambientes que mimetizam rigorosamente o Comportamento Esperado usando os Contêineres. 
+
+## Testes Unitários
+
+Verificará rapidamente via JEST se os Services internos/Mock Providers (e seu código isolado) estão funcionando.
 ```bash
 npm run test
 ```
 
-## E2E Tests
+## Testes E2E
+
+Verificará todo o roteamento do servidor da App, através do `Supertest`, conectando no banco. A diferença é que a cada suite E2E a aplicação derruba a si própria e reconstroi para garantir "Cenários Zerados e Limpos".
 
 ```bash
 npm run test:e2e
 ```
 
-## Tests in Docker
+## Testes em Conteineres (Docker/E2E)
 
-### For relational database
+### Para o ecossistema atual configurado com PostgreSQL (Relacional)
+
+O comando final abaixo irá submeter e empacotar uma build local novinha focada apenas para o E2E testar na íntegra a arquitetura Docker de forma 100% igual ao pipeline de CI no GitHub! Esse roteiro de Script (`test:e2e:relational:docker`) inclusive inicia seu container, prepara o BD paralelo, aguarda o healthcheck através da biblioteca de espera unificada `wait-for-it.sh`, e roda a bateria! Tendo concluído a bateria, o conteiner de "Test-E2E" é derrubado sem impactar suas tabelas da máquina real!
 
 ```bash
 npm run test:e2e:relational:docker
 ```
-
-### For document database
-
-```bash
-npm run test:e2e:document:docker
-```
-
----
-
-Previous: [File uploading](file-uploading.md)
-
-Next: [Benchmarking](benchmarking.md)

@@ -1,92 +1,38 @@
-# Command Line Interface (CLI)
+# Interface de Linha de Comando (CLI)
 
 ---
 
-## Table of Contents <!-- omit in toc -->
+## Tabela de Conteúdos <!-- omit in toc -->
 
-- [Generate resource](#generate-resource)
-  - [For document oriented database (MongoDB + Mongoose)](#for-document-oriented-database-mongodb--mongoose)
-  - [For relational database (PostgreSQL + TypeORM)](#for-relational-database-postgresql--typeorm)
-    - [Video guideline for relational database (PostgreSQL + TypeORM)](#video-guideline-for-relational-database-postgresql--typeorm)
-  - [For both databases](#for-both-databases)
-- [Add property to resource](#add-property-to-resource)
-  - [Property for document oriented database (MongoDB + Mongoose)](#property-for-document-oriented-database-mongodb--mongoose)
-  - [Property for relational database (PostgreSQL + TypeORM)](#property-for-relational-database-postgresql--typeorm)
-    - [Video guideline how to add property for relational database (PostgreSQL + TypeORM)](#video-guideline-how-to-add-property-for-relational-database-postgresql--typeorm)
-  - [Property for both databases](#property-for-both-databases)
+- [Gerar novos recursos (Módulos/Tabelas)](#gerar-novos-recursos)
+- [Adicionar uma nova propriedade a um recurso](#adicionar-uma-nova-propriedade-a-um-recurso)
 
 ---
 
-## Generate resource
+## Gerar novos recursos
 
-Generate resource with the following commands:
+Gerar um "recurso" via CLI significa criar as camadas `Controller`, `Service`, `Repository`, `DTOs` e `Entities` que gerenciam uma respectiva regra de negócio de uma vez, poupando minutos ou horas fazendo Boilerplate.
 
-### For document oriented database (MongoDB + Mongoose)
-  
-```bash
-npm run generate:resource:document -- --name ResourceName
-```
-
-Example:
+No Motor de Engajamento, usamos banco de dados Relacional via TypeORM. Para construir o "esqueleto" de coisas novas (Ex: "Projeto", "Badge", "Equipe") utilize o comando a seguir:
 
 ```bash
-npm run generate:resource:document -- --name Category
+npm run generate:resource:relational -- --name NomeDoRecurso
 ```
 
-### For relational database (PostgreSQL + TypeORM)
+Exemplo prático de criação de um módulo de Projetos:
 
 ```bash
-npm run generate:resource:relational -- --name ResourceName
+npm run generate:resource:relational -- --name Project
 ```
+O próprio código base irá gerar a pasta em `src/projects/` devidamente injetada na aplicação principal, e em formato Plural.
 
-Example:
+## Adicionar uma nova propriedade a um recurso
 
-```bash
-npm run generate:resource:relational -- --name Category
-```
+Se eu já tenho um recurso existe, ex (`User`), e eu decidi adicionar a coluna `birthDate` (data de nascimento) no meio do projeto. Você pode rodar um CLI para atualizar a DTO e a Entidade simultaneamente!
 
-#### Video guideline for relational database (PostgreSQL + TypeORM)
-
-<https://github.com/user-attachments/assets/f7f91a7d-f9ff-4653-a78a-152ac5e7a95d>
-
-### For both databases
-
-```bash
-npm run generate:resource:all-db -- --name ResourceName
-```
-
-Example:
-
-```bash
-npm run generate:resource:all-db -- --name Category
-```
-
-## Add property to resource
-
-### Property for document oriented database (MongoDB + Mongoose)
-
-```bash
-npm run add:property:to-document
-```
-
-### Property for relational database (PostgreSQL + TypeORM)
+Execute:
 
 ```bash
 npm run add:property:to-relational
 ```
-
-#### Video guideline how to add property for relational database (PostgreSQL + TypeORM)
-
-<https://github.com/user-attachments/assets/95b9d70a-70cf-442a-b8bf-a73d32810e0c>
-
-### Property for both databases
-
-```bash
-npm run add:property:to-all-db
-```
-
----
-
-Previous: [Architecture](architecture.md)
-
-Next: [Database](database.md)
+E o sistema fará perguntas simples no Terminal para construir isso da forma esperada pela arquitetura.
