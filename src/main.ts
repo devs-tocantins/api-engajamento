@@ -52,17 +52,8 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('docs', app, document);
 
-  const swaggerPath = 'swagger';
-  SwaggerModule.setup(swaggerPath, app, document);
-
-  const port = configService.getOrThrow('app.port', { infer: true });
-  await app.listen(port);
-
-  const backendDomain =
-    process.env.BACKEND_DOMAIN ?? `http://localhost:${port}`;
-
-  console.log(`🚀 Application is running on: ${backendDomain}`);
-  console.log(`📚 Swagger available at: ${backendDomain}/${swaggerPath}`);
+  await app.listen(configService.getOrThrow('app.port', { infer: true }));
 }
 void bootstrap();

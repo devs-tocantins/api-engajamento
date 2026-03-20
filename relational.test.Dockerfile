@@ -8,9 +8,9 @@ RUN cd /tmp/app && npm install
 
 COPY . /usr/src/app
 
-COPY .docker/wait-for-it.sh /opt/wait-for-it.sh
+COPY ./wait-for-it.sh /opt/wait-for-it.sh
 RUN chmod +x /opt/wait-for-it.sh
-COPY .docker/startup.relational.test.sh /opt/startup.relational.test.sh
+COPY ./startup.relational.test.sh /opt/startup.relational.test.sh
 RUN chmod +x /opt/startup.relational.test.sh
 RUN sed -i 's/\r//g' /opt/wait-for-it.sh
 RUN sed -i 's/\r//g' /opt/startup.relational.test.sh
